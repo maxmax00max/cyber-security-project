@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кибербезопасность • Проверь пароль и узнай об угрозах</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body {font-family:'Comfortaa',sans-serif;background:linear-gradient(135deg,#0d6efd,#0b5ed7);color:white;margin:0;padding:0;line-height:1.7;}
+        nav{position:fixed;top:0;left:0;width:100%;background:rgba(0,0,0,0.5);backdrop-filter:blur(12px);padding:18px 0;z-index:1000;text-align:center;box-shadow:0 5px 25px rgba(0,0,0,0.4);}
+        nav a{color:white;margin:0 28px;text-decoration:none;font-weight:bold;font-size:19px;transition:0.3s;}
+        nav a:hover{color:#00ff9d;text-decoration:underline;}
+        .container{max-width:1000px;margin:0 auto;padding:100px 20px 80px;}
+        h1{font-size:44px;text-align:center;margin:0 0 25px;text-shadow:0 3px 15px rgba(0,0,0,0.6);}
+        h2{font-size:34px;text-align:center;margin:60px 0 30px;color:#00ff9d;}
+        .card{background:rgba(255,255,255,0.12);backdrop-filter:blur(12px);padding:35px;border-radius:22px;margin:35px 0;box-shadow:0 15px 40px rgba(0,0,0,0.4);}
+        input[type=password]{padding:16px;font-size:20px;width:370px;border:none;border-radius:50px;margin:15px;}
+        button{padding:16px 55px;font-size:21px;background:#00ff9d;color:#000;border:none;border-radius:50px;cursor:pointer;font-weight:bold;transition:0.3s;}
+        button:hover{background:#fff;transform:scale(1.05);}
+        #result{margin-top:30px;font-size:32px;min-height:80px;}
+        .happy{color:#51f551;}
+        .sad{color:#ff6b6b;}
+        .warning{background:#ff4444;padding:28px;border-radius:20px;font-size:22px;text-align:center;margin:40px 0;}
+        img{max-width:100%;border-radius:22px;margin:40px 0;box-shadow:0 15px 40px rgba(0,0,0,0.5);}
+        ul.directions{font-size:19px;}
+        ul.directions li{margin:20px 0;padding:15px;background:rgba(255,255,255,0.1);border-radius:12px;}
+        .threat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin-top:30px;}
+        .threat-card{background:rgba(255,255,255,0.15);padding:20px;border-radius:15px;cursor:pointer;transition:0.3s;}
+        .threat-card:hover{background:rgba(255,255,255,0.25);transform:translateY(-5px);}
+        .threat-card h3{font-size:22px;margin:10px 0;color:#00ff9d;}
+        .details{display:none;padding:15px;background:rgba(0,0,0,0.3);border-radius:10px;margin-top:10px;}
+        .details.show{display:block;}
+        .stats-grid {display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;}
+        .stats-item {background:rgba(255,255,255,0.1);padding:20px;border-radius:15px;text-align:center;}
+        .tip{background:rgba(0,255,150,0.15);border-left:5px solid #00ff9d;padding:18px;margin:15px 0;border-radius:0 12px 12px 0;font-size:18px;}
+        .gold{background:rgba(0,255,150,0.3);padding:30px;border-radius:20px;text-align:center;font-size:24px;margin:40px 0;}
+        .hero{text-align:center;padding:90px 20px 30px;font-size:78px;font-weight:700;color:#00ff9d;text-shadow:0 0 30px rgba(0,255,150,0.8);}
+        .author{padding:80px 20px;text-align:center;}
+        .author img{max-width:90%;border-radius:15px;margin:30px 0;box-shadow:0 15px 40px rgba(0,0,0,0.5);}
+        .author iframe{width:100%;max-width:800px;height:450px;margin:30px 0;border-radius:15px;}
+    </style>
+</head>
+<body>
+<nav>
+    <a href="#about">Что такое кибербезопасность?</a>
+    <a href="#safety">Как быть в безопасности</a>
+    <a href="#threats">Виды угроз</a>
+    <a href="#facts">Факты и статистика</a>
+    <a href="#home">Проверить пароль</a>
+</nav>
+<div class="container">
+    <!-- Большая надпись вверху -->
+    <div class="hero">КИБЕРБЕЗОПАСНОСТЬ</div>
+    <!-- 1. Что такое кибербезопасность? -->
+    <section id="about">
+        <h1>Что такое кибербезопасность?</h1>
+        <div class="card">
+            <p style="font-size:20px;text-align:center;">
+                Кибербезопасность — это совокупность методов и практик защиты компьютеров, серверов, мобильных устройств, сетей и данных от атак злоумышленников.
+            </p>
+            <h2>Основные направления кибербезопасности:</h2>
+            <ul class="directions">
+                <li><strong>Безопасность сетей</strong> — действия по защите компьютерных сетей от различных угроз, например целевых атак или вредоносных программ.</li>
+                <li><strong>Безопасность приложений</strong> — защита устройств от угроз, которые преступники могут спрятать в программах. Зараженное приложение может открыть злоумышленнику доступ к данным, которые оно должно защищать. Безопасность приложения обеспечивается еще на стадии разработки, задолго до его появления в открытых источниках.</li>
+                <li><strong>Безопасность информации</strong> — обеспечение целостности и приватности данных как во время хранения, так и при передаче.</li>
+                <li><strong>Операционная безопасность</strong> — обращение с информационными активами и их защита. К этой категории относится, например, управление разрешениями для доступа к сети или правилами, которые определяют, где и каким образом данные могут храниться и передаваться.</li>
+                <li><strong>Аварийное восстановление и непрерывность бизнеса</strong> — реагирование на инцидент безопасности (действия злоумышленников) и любое другое событие, которое может нарушить работу систем или привести к потере данных. Аварийное восстановление — набор правил, описывающих то, как организация будет бороться с последствиями атаки и восстанавливать рабочие процессы. Непрерывность бизнеса — план действий на случай, если организация теряет доступ к определенным ресурсам из-за атаки злоумышленников.</li>
+                <li><strong>Повышение осведомленности</strong> — обучение пользователей. Это направление помогает снизить влияние самого непредсказуемого фактора в области кибербезопасности — человеческого. Даже самая защищенная система может подвергнуться атаке из-за чьей-то ошибки или незнания. Поэтому каждая организация должна проводить тренинги для сотрудников и рассказывать им о главных правилах: например, что не нужно открывать подозрительные вложения в электронной почте или подключать сомнительные USB-устройства.</li>
+            </ul>
+            <p style="font-size:28px;text-align:center;margin:50px 0;color:#00ff9d;">
+                Кибербезопасность = твоё спокойствие в цифровом мире
+            </p>
+        </div>
+        <img src="" alt="">
+    </section>
+    <!-- 2. Как быть в безопасности -->
+    <section id="safety">
+        <h1>Как быть в безопасности в интернете в 2025 году</h1>
+        <div class="card">
+            <p style="text-align:center;font-size:23px;margin-bottom:40px;"><strong>Самые простые и рабочие правила 2025 года</strong><br>Делай всё это — и будешь в безопасности.</p>
+            <h2>Пароли и аккаунты (самое важное!)</h2>
+            <div class="tip">1. Никаких 123456, qwerty, имя+год — это мгновенный взлом.</div>
+            <div class="tip">2. Минимум 12–16 символов, обязательно: Aа + 0–9 + !@#$%<br>Пример хорошего: <code>Kotik2025!Murka#</code></div>
+            <div class="tip">3. Уникальный пароль на каждый сайт/приложение</div>
+            <div class="tip">4. Включи 2FA везде (лучше через Google Authenticator или Яндекс.Ключ, а не СМС)</div>
+            <div class="tip">5. Используй менеджер паролей → бесплатно: Bitwarden или платно: 1Password</div>
+            <h2>Почта, мессенджеры, соцсети</h2>
+            <div class="tip">• Никому и никогда не говори коды из СМС и пуш-уведомлений («это банк звонит» = 100% мошенники)</div>
+            <div class="tip">• Не переходи по ссылкам из писем и сообщений «от Сбера, Госуслуг, СДЭК, Озона»</div>
+            <div class="tip">• Звонят «из службы безопасности»? Клади трубку и перезванивай только на официальный номер с сайта банка</div>
+            <h2>Телефон и компьютер</h2>
+            <div class="tip">• Устанавливай обновления системы и приложений сразу</div>
+            <div class="tip">• Не качай .exe, .apk и «взломанные» игры/программы</div>
+            <div class="tip">• Включи встроенный антивирус (Windows Defender + Malwarebytes бесплатно — хватает 95% людей)</div>
+            <div class="tip">• На телефон — не давай «неизвестным источникам» права установки</div>
+            <h2>Интернет и Wi-Fi</h2>
+            <div class="tip">• В кафе/ТЦ/аэропорту подключайся только через VPN (любой платный или бесплатный ProtonVPN)</div>
+            <div class="tip">• В браузере включи блокировщик рекламы (uBlock Origin) — убирает 80% фишинга и трекеров</div>
+            <h2>Деньги и крипта</h2>
+            <div class="tip">• Никому не давай CVV с обратной стороны карты и коды из СМС</div>
+            <div class="tip">• Для покупок в интернете заведи отдельную виртуальную карту с лимитом</div>
+            <div class="tip">• Криптокошелёк: включи 2FA + фразу-сид храни только на бумаге (не в заметках и не в облаке)</div>
+            <div class="gold">
+                <strong>Самое простое правило на каждый день</strong><br><br>
+                Если что-то просит срочно ввести пароль, код, перейти по ссылке или перевести деньги —<br>
+                <strong>остановись на 10 секунд и подумай</strong>.<br><br>
+                99% мошенничества ловится именно на этом.
+            </div>
+            <p style="text-align:center;font-size:28px;color:#00ff9d;margin:50px 0;">
+                Сделай эти 10 пунктов привычкой — и тебя почти невозможно взломать или обмануть в 2025–2026 году.<br>
+                Сохрани себе этот список — он реально спасает миллионы рублей и нервов
+            </p>
+        </div>
+    </section>
+    <!-- 3. Виды угроз -->
+    <section id="threats">
+        <h1>Виды киберугроз</h1>
+        <div class="card">
+            <h2>Три главных типа Киберпреступлений:</h2>
+            <ul style="font-size:19px;">
+                <li><strong>Кибермошенничество</strong> — преступления, совершаемые с целью незаконного получения финансовой выгоды или личной информации.</li>
+                <li><strong>Кибератака</strong> — преднамеренное злонамеренное действие, направленное на взлом, повреждение или нарушение работы компьютерных систем, сетей или устройств с целью кражи данных, получения несанкционированного доступа, вымогательства, шпионажа или саботажа </li>
+                <li><strong>Кибертерроризм</strong> — использование компьютерных технологий и интернета для совершения незаконных действий с целью достижения политических, религиозных или идеологических целей</li>
+            </ul>
+            <h2 style="margin-top:50px;">Самые опасные инструменты хакеров (нажми — узнай подробнее)</h2>
+            <div class="threat-grid">
+                <div class="threat-card" onclick="toggle(this)">
+                    <h3>Вирусы и черви</h3>
+                    <div class="details">Компьютерный вирус — это вредоносная программа, которая может самостоятельно создавать свои копии и внедряться в другие программы или файлы. Основная цель — заразить систему, повредить или украсть данные, замедлить работу или вывести из строя. Распространяются через заражённые файлы, программы, USB-накопители.</div>
+                </div>
+                <div class="threat-card" onclick="toggle(this)">
+                    <h3>Троянцы</h3>
+                    <div class="details">Маскируются под полезные программы. Пользователь сам запускает троянца, после чего хакер получает полный доступ к компьютеру, крадёт пароли, файлы или включает камеру/микрофон.</div>
+                </div>
+                <div class="threat-card" onclick="toggle(this)">
+                    <h3>Шпионское ПО</h3>
+                    <div class="details">Тайно собирает данные: пароли, историю браузера, переписку, номера карт. Часто устанавливается вместе с пиратским софтом или «бесплатными» играми.</div>
+                </div>
+                <div class="threat-card" onclick="toggle(this)">
+                    <h3>Программы-вымогатели</h3>
+                    <div class="details">Шифруют все файлы на компьютере и требуют выкуп (обычно в биткоинах). Без ключа восстановить данные почти невозможно. Примеры: LockBit, Conti, REvil.</div>
+                </div>
+                <div class="threat-card" onclick="toggle(this)">
+                    <h3>Рекламное ПО</h3>
+                    <div class="details">Засоряет браузер рекламой, перенаправляет на фишинговые сайты, может устанавливать другое вредоносное ПО.</div>
+                </div>
+                <div class="threat-card" onclick="toggle(this)">
+                    <h3>Ботнеты</h3>
+                    <div class="details">Тысячи заражённых компьютеров объединяются в сеть. Используются для DDoS-атак, рассылки спама или майнинга криптовалюты без ведома владельца.</div>
+                </div>
+                <div class="threat-card" onclick="toggle(this)">
+                    <h3>SQL-инъекции</h3>
+                    <div class="details">Ввод вредоносного кода в формы сайтов (например, логин/пароль), чтобы получить доступ к базе данных магазина или соцсети.</div>
+                </div>
+                <div class="threat-card" onclick="toggle(this)">
+                    <h3>Фишинг</h3>
+                    <div class="details">Фальшивые письма/смс от «банка», «Госуслуг», «СДЭК». Цель — заставить ввести пароль, код из СМС или перейти по ссылке.</div>
+                </div>
+                <div class="threat-card" onclick="toggle(this)">
+                    <h3>Man-in-the-Middle</h3>
+                    <div class="details">Хакер перехватывает трафик между тобой и сайтом (например, в открытом Wi-Fi кафе). Видит всё: пароли, карты, переписку.</div>
+                </div>
+                <div class="threat-card" onclick="toggle(this)">
+                    <h3>DDoS-атаки</h3>
+                    <div class="details">Миллионы запросов одновременно на сайт или сервер — он «падает» и становится недоступен. Используется для шантажа или саботажа.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- 4. Факты и статистика -->
+    <section id="facts">
+        <h1>Самый популярный пароль в России — 123456</h1>
+        <div class="warning">
+            <strong>123456</strong> — худший пароль мира уже 10+ лет!<br>
+            Его используют миллионы россиян, и хакеры взламывают такие аккаунты за доли секунды.
+        </div>
+        <img src="" alt="">
+        <div class="card">
+            <h2>Страшная статистика 2025 года</h2>
+            <div class="stats-grid">
+                <div class="stats-item">
+                    <h3>5,5 млрд</h3>
+                    <p>Аккаунтов взломано в 2024 (ожидается рост в 2025)<grok-card data-id="147ce8" data-type="citation_card"></grok-card></p>
+                </div>
+                <div class="stats-item">
+                    <h3>32% рост</h3>
+                    <p>Аккаунт-тейкоговеров из-за слабой 2FA<grok-card data-id="8985d3" data-type="citation_card"></grok-card></p>
+                </div>
+                <div class="stats-item">
+                    <h3>$2,17 млрд</h3>
+                    <p>Украдено в крипто-хакках к середине 2025<grok-card data-id="871fb6" data-type="citation_card"></grok-card></p>
+                </div>
+                <div class="stats-item">
+                    <h3>1 в 15 человек</h3>
+                    <p>Сталкивается с кражей аккаунта ежегодно<grok-card data-id="bf988f" data-type="citation_card"></grok-card></p>
+                </div>
+                <div class="stats-item">
+                    <h3>$4,44 млн</h3>
+                    <p>Средняя стоимость утечки данных в 2025<grok-card data-id="c3d5f5" data-type="citation_card"></grok-card></p>
+                </div>
+                <div class="stats-item">
+                    <h3>23% краж</h3>
+                    <p>Через личные кошельки (рост с 12% в 2023)<grok-card data-id="a8bcbf" data-type="citation_card"></grok-card></p>
+                </div>
+            </div>
+            <ul style="font-size:18px;margin-top:20px;">
+                <li>81% взломов — из-за слабых или украденных паролей<grok-card data-id="8d2493" data-type="citation_card"></grok-card></li>
+                <li>230 000+ скомпрометированных крипто-аккаунтов (из инфографики)</li>
+                <li>16% брешей используют ИИ для кражи аккаунтов<grok-card data-id="1413b4" data-type="citation_card"></grok-card></li>
+                <li>Новая жертва кражи аккаунта каждые 22 секунды<grok-card data-id="ab64a0" data-type="citation_card"></grok-card></li>
+            </ul>
+        </div>
+    </section>
+    <!-- 5. Проверить пароль -->
+    <section id="home">
+        <h1>Проверь свой пароль за 1 секунду</h1>
+        <p style="text-align:center;font-size:22px;">Минимум 12 символов (буквы разного регистра + цифры + спецсимволы)</p>
+        <div class="card" style="text-align:center;">
+            <input type="password" id="passwordInput" placeholder="Введи пароль сюда">
+            <br><br>
+            <button id="checkButton">ПРОВЕРИТЬ </button>
+            <div id="result"></div>
+        </div>
+    </section>
+<script>
+// Плавная прокрутка 
+document.querySelectorAll('nav a').forEach(a => {
+    a.addEventListener('click', e => {
+        e.preventDefault();
+        document.querySelector(a.getAttribute('href')).scrollIntoView({behavior: 'smooth'});
+    });
+});
+// скрытый текст "Виды угроз"
+function toggle(el) {
+    el.querySelector('.details').classList.toggle('show');
+}
+// Проверка пароля
+document.getElementById('checkButton').onclick = function() {
+    const pass = document.getElementById('passwordInput').value;
+    const result = document.getElementById('result');
+    const strong = pass.length >= 12 && /[A-Z]/.test(pass) && /[a-z]/.test(pass) && /\d/.test(pass) && /[!@#$%^&*()_+]/.test(pass);
+  
+    if (strong) {
+        result.innerHTML = '<div class="happy">СУПЕР! Пароль НАДЁЖНЫЙ!</div>';
+        confetti({particleCount:300, spread:110, origin:{y:0.6}});
+    } else {
+        result.innerHTML = '<div class="sad">Этот пароль взломают за секунды!</div>';
+    }
+};
+</script>
