@@ -7,38 +7,67 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <style>
-        body {font-family:'Comfortaa',sans-serif;background:linear-gradient(135deg,#0d6efd,#0b5ed7);color:white;margin:0;padding:0;line-height:1.7;}
-        nav{position:fixed;top:0;left:0;width:100%;background:rgba(0,0,0,0.5);backdrop-filter:blur(12px);padding:18px 0;z-index:1000;text-align:center;box-shadow:0 5px 25px rgba(0,0,0,0.4);}
-        nav a{color:white;margin:0 28px;text-decoration:none;font-weight:bold;font-size:19px;transition:0.3s;}
+        body {font-family:'Comfortaa',sans-serif;background:linear-gradient(135deg,#0d6efd,#0b5ed7);color:white;margin:0;padding:0;line-height:1.7; overflow-x: hidden;} /* Добавлено overflow-x чтобы не было прокрутки вбок */
+        
+        /* Навигация адаптирована под flex для переноса строк на малых экранах */
+        nav{position:fixed;top:0;left:0;width:100%;background:rgba(0,0,0,0.5);backdrop-filter:blur(12px);padding:18px 0;z-index:1000;text-align:center;box-shadow:0 5px 25px rgba(0,0,0,0.4); display: flex; justify-content: center; flex-wrap: wrap;}
+        nav a{color:white;margin:5px 15px;text-decoration:none;font-weight:bold;font-size:19px;transition:0.3s;}
         nav a:hover{color:#00ff9d;text-decoration:underline;}
-        .container{max-width:1000px;margin:0 auto;padding:100px 20px 80px;}
+        
+        .container{max-width:1000px;margin:0 auto;padding:120px 20px 80px;}
+        
         h1{font-size:44px;text-align:center;margin:0 0 25px;text-shadow:0 3px 15px rgba(0,0,0,0.6);}
         h2{font-size:34px;text-align:center;margin:60px 0 30px;color:#00ff9d;}
+        
         .card{background:rgba(255,255,255,0.12);backdrop-filter:blur(12px);padding:35px;border-radius:22px;margin:35px 0;box-shadow:0 15px 40px rgba(0,0,0,0.4);}
-        input[type=password]{padding:16px;font-size:20px;width:370px;border:none;border-radius:50px;margin:15px;}
-        button{padding:16px 55px;font-size:21px;background:#00ff9d;color:#000;border:none;border-radius:50px;cursor:pointer;font-weight:bold;transition:0.3s;}
+        
+        /* ИЗМЕНЕНО: ширина инпута теперь гибкая (max-width вместо width) */
+        input[type=password]{padding:16px;font-size:20px;width:100%; max-width:370px; border:none;border-radius:50px;margin:15px; box-sizing: border-box;}
+        
+        button{padding:16px 55px;font-size:21px;background:#00ff9d;color:#000;border:none;border-radius:50px;cursor:pointer;font-weight:bold;transition:0.3s; max-width: 100%;}
         button:hover{background:#fff;transform:scale(1.05);}
-        #result{margin-top:30px;font-size:32px;min-height:80px;}
+        
+        #result{margin-top:30px;font-size:32px;min-height:80px; text-align: center; word-wrap: break-word;}
         .happy{color:#51f551;}
         .sad{color:#ff6b6b;}
         .warning{background:#ff4444;padding:28px;border-radius:20px;font-size:22px;text-align:center;margin:40px 0;}
-        img{max-width:100%;border-radius:22px;margin:40px 0;box-shadow:0 15px 40px rgba(0,0,0,0.5);}
-        ul.directions{font-size:19px;}
+        img{max-width:100%;border-radius:22px;margin:40px 0;box-shadow:0 15px 40px rgba(0,0,0,0.5); height: auto;}
+        
+        ul.directions{font-size:19px; padding-left: 20px;}
         ul.directions li{margin:20px 0;padding:15px;background:rgba(255,255,255,0.1);border-radius:12px;}
+        
         .threat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin-top:30px;}
         .threat-card{background:rgba(255,255,255,0.15);padding:20px;border-radius:15px;cursor:pointer;transition:0.3s;}
         .threat-card:hover{background:rgba(255,255,255,0.25);transform:translateY(-5px);}
         .threat-card h3{font-size:22px;margin:10px 0;color:#00ff9d;}
+        
         .details{display:none;padding:15px;background:rgba(0,0,0,0.3);border-radius:10px;margin-top:10px;}
         .details.show{display:block;}
+        
         .stats-grid {display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;}
         .stats-item {background:rgba(255,255,255,0.1);padding:20px;border-radius:15px;text-align:center;}
+        
         .tip{background:rgba(0,255,150,0.15);border-left:5px solid #00ff9d;padding:18px;margin:15px 0;border-radius:0 12px 12px 0;font-size:18px;}
         .gold{background:rgba(0,255,150,0.3);padding:30px;border-radius:20px;text-align:center;font-size:24px;margin:40px 0;}
-        .hero{text-align:center;padding:90px 20px 30px;font-size:78px;font-weight:700;color:#00ff9d;text-shadow:0 0 30px rgba(0,255,150,0.8);}
+        
+        .hero{text-align:center;padding:90px 20px 30px;font-size:78px;font-weight:700;color:#00ff9d;text-shadow:0 0 30px rgba(0,255,150,0.8); word-wrap: break-word;}
         .author{padding:80px 20px;text-align:center;}
         .author img{max-width:90%;border-radius:15px;margin:30px 0;box-shadow:0 15px 40px rgba(0,0,0,0.5);}
         .author iframe{width:100%;max-width:800px;height:450px;margin:30px 0;border-radius:15px;}
+
+        /* --- НОВЫЙ БЛОК: Адаптация под телефоны --- */
+        @media (max-width: 768px) {
+            .hero { font-size: 40px; padding-top: 50px; } /* Уменьшаем огромный заголовок */
+            h1 { font-size: 28px; }
+            h2 { font-size: 24px; }
+            .card { padding: 20px; } /* Меньше отступы внутри карт */
+            nav a { font-size: 14px; margin: 5px 8px; } /* Ссылки меню компактнее */
+            input[type=password] { margin: 15px 0; width: 100%; } /* Поле ввода на всю ширину */
+            .threat-grid, .stats-grid { grid-template-columns: 1fr; } /* Блоки в одну колонку */
+            ul.directions { font-size: 16px; }
+            .gold { font-size: 18px; padding: 20px; }
+            .tip { font-size: 16px; }
+        }
     </style>
 </head>
 <body>
@@ -50,9 +79,7 @@
     <a href="#home">Проверить пароль</a>
 </nav>
 <div class="container">
-    <!-- Большая надпись вверху -->
     <div class="hero">КИБЕРБЕЗОПАСНОСТЬ</div>
-    <!-- 1. Что такое кибербезопасность? -->
     <section id="about">
         <h1>Что такое кибербезопасность?</h1>
         <div class="card">
@@ -74,7 +101,6 @@
         </div>
         <img src="" alt="">
     </section>
-    <!-- 2. Как быть в безопасности -->
     <section id="safety">
         <h1>Как быть в безопасности в интернете в 2025 году</h1>
         <div class="card">
@@ -112,7 +138,6 @@
             </p>
         </div>
     </section>
-    <!-- 3. Виды угроз -->
     <section id="threats">
         <h1>Виды киберугроз</h1>
         <div class="card">
@@ -167,7 +192,6 @@
             </div>
         </div>
     </section>
-    <!-- 4. Факты и статистика -->
     <section id="facts">
         <h1>Самый популярный пароль в России — 123456</h1>
         <div class="warning">
@@ -180,38 +204,37 @@
             <div class="stats-grid">
                 <div class="stats-item">
                     <h3>16млрд</h3>
-                    <p>Масштаб утечек паролей<grok-card data-id="147ce8" data-type="citation_card"></grok-card></p>
+                    <p>Масштаб утечек паролей</p>
                 </div>
                 <div class="stats-item">
                     <h3>32% рост</h3>
-                    <p>Аккаунт-тейкоговеров из-за слабой 2FA<grok-card data-id="8985d3" data-type="citation_card"></grok-card></p>
+                    <p>Аккаунт-тейкоговеров из-за слабой 2FA</p>
                 </div>
                 <div class="stats-item">
                     <h3>$2,17 млрд</h3>
-                    <p>Украдено в крипто-хакках к середине 2025<grok-card data-id="871fb6" data-type="citation_card"></grok-card></p>
+                    <p>Украдено в крипто-хакках к середине 2025</p>
                 </div>
                 <div class="stats-item">
                     <h3>1 из 15 человек</h3>
-                    <p>Сталкивается с кражей аккаунта ежегодно<grok-card data-id="bf988f" data-type="citation_card"></grok-card></p>
+                    <p>Сталкивается с кражей аккаунта ежегодно</p>
                 </div>
                 <div class="stats-item">
                     <h3>$4,44 млн</h3>
-                    <p>Средняя стоимость утечки данных в 2025<grok-card data-id="c3d5f5" data-type="citation_card"></grok-card></p>
+                    <p>Средняя стоимость утечки данных в 2025</p>
                 </div>
                 <div class="stats-item">
                     <h3>23% краж</h3>
-                    <p>Через личные кошельки <grok-card data-id="a8bcbf" data-type="citation_card"></grok-card></p>
+                    <p>Через личные кошельки </p>
                 </div>
             </div>
             <ul style="font-size:18px;margin-top:20px;">
-                <li>81% взломов — из-за слабых или украденных паролей<grok-card data-id="8d2493" data-type="citation_card"></grok-card></li>
+                <li>81% взломов — из-за слабых или украденных паролей</li>
                 <li>230 000+ скомпрометированных крипто-аккаунтов (из инфографики)</li>
-                <li>16% брешей используют ИИ для кражи аккаунтов<grok-card data-id="1413b4" data-type="citation_card"></grok-card></li>
-                <li>Новая жертва кражи аккаунта каждые 22 секунды<grok-card data-id="ab64a0" data-type="citation_card"></grok-card></li>
+                <li>16% брешей используют ИИ для кражи аккаунтов</li>
+                <li>Новая жертва кражи аккаунта каждые 22 секунды</li>
             </ul>
         </div>
     </section>
-    <!-- 5. Проверить пароль -->
     <section id="home">
         <h1>Проверь свой пароль за 1 секунду</h1>
         <p style="text-align:center;font-size:22px;">Минимум 12 символов (латинские буквы разного регистра + цифры + спецсимволы)</p>
@@ -223,6 +246,16 @@
         </div>
     </section>
 <script>
+// Авто-определение устройства
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+// Если хочешь посмотреть в консоли браузера, что он определил:
+if (isMobile) {
+    console.log("Сайт запущен на мобильном устройстве");
+} else {
+    console.log("Сайт запущен на компьютере/ноутбуке");
+}
+
 // Плавная прокрутка 
 document.querySelectorAll('nav a').forEach(a => {
     a.addEventListener('click', e => {
@@ -242,9 +275,16 @@ document.getElementById('checkButton').onclick = function() {
   
     if (strong) {
         result.innerHTML = '<div class="happy">🎉СУПЕР! Пароль НАДЁЖНЫЙ🥳</div>';
-        confetti({particleCount:900, spread:150, origin:{y:0.7}});
+        // Если мобильный телефон, запускаем меньше конфетти, чтобы не тормозило
+        confetti({
+            particleCount: isMobile ? 100 : 900, 
+            spread: isMobile ? 70 : 150, 
+            origin:{y:0.7}
+        });
     } else {
         result.innerHTML = '<div class="sad">Этот пароль взломают за секунды!</div>';
     }
 };
 </script>
+</body>
+</html>
