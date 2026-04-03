@@ -7,9 +7,6 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <style>
-* {
-    box-sizing: border-box;
-}
         body {
     font-family: 'Comfortaa', sans-serif;
     background-color: #050b14;
@@ -23,11 +20,6 @@
     line-height: 1.7;
     overflow-x: hidden;
 };
-body {
-    /* твои старые стили... */
-    max-width: 100vw;
-    overflow-x: hidden;
-}
 
 }
 /* Кастомный скроллбар */
@@ -109,14 +101,17 @@ body {
         .video-item p { margin-top: 15px; font-weight: bold; font-size: 18px; color: #00ff9d; }
 
         @media (max-width: 768px) {
-    .hero { 
-        font-size: 6.5vw; /* Уменьшили размер до 6.5%, чтобы точно влезло */
-        padding-top: 80px; 
-        letter-spacing: -1px; /* Слегка сужаем расстояние между буквами */
-        white-space: nowrap; /* Оставляем в одну строку */
-    }
-    /* ... тут остаются твои остальные мобильные стили ... */
-}
+            .hero { font-size: 8vw; padding-top: 50px; }
+            h1 { font-size: 28px; }
+            h2 { font-size: 24px; }
+            .card { padding: 20px; }
+            nav a { font-size: 14px; margin: 5px 8px; }
+            input[type=password] { margin: 15px 0; width: 100%; }
+            .threat-grid, .stats-grid, .video-grid { grid-template-columns: 1fr; }
+            ul.directions { font-size: 16px; }
+            .gold { font-size: 18px; padding: 20px; }
+            .tip { font-size: 16px; }
+        }
     </style> @keyframes gradientBG {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
